@@ -1,0 +1,9 @@
+player_id,skill_rating,wait_seconds,region
+na-01,1000,120,NA
+na-02,1020,90,NA
+na-03,1010,80,NA
+na-04,1010,60,NA
+eu-01,900,110,EU
+eu-02,940,100,EU
+eu-03,920,90,EU
+eu-04,920,70,EU
