@@ -1,0 +1,9 @@
+player_id,skill_rating,wait_seconds,region
+p01,100,80,NA
+p02,100,70,NA
+p03,100,60,NA
+p04,0,50,NA
+p05,0,40,NA
+p06,0,30,NA
+p07,0,20,NA
+p08,100,10,NA
