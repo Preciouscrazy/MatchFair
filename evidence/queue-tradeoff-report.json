@@ -1,0 +1,40 @@
+{
+  "limitations": "Synthetic offline heuristic; not a real matchmaking system.",
+  "match_count": 2,
+  "matches": [
+    {
+      "max_wait_seconds": 80.0,
+      "mean_wait_seconds": 65.0,
+      "region": "NA",
+      "skill_gap": 100.0,
+      "team_a": [
+        "p01",
+        "p02"
+      ],
+      "team_a_skill": 200.0,
+      "team_b": [
+        "p03",
+        "p04"
+      ],
+      "team_b_skill": 100.0
+    },
+    {
+      "max_wait_seconds": 40.0,
+      "mean_wait_seconds": 25.0,
+      "region": "NA",
+      "skill_gap": 100.0,
+      "team_a": [
+        "p05",
+        "p06"
+      ],
+      "team_a_skill": 0.0,
+      "team_b": [
+        "p07",
+        "p08"
+      ],
+      "team_b_skill": 100.0
+    }
+  ],
+  "mean_skill_gap": 100.0,
+  "team_size": 2
+}
