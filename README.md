@@ -63,4 +63,4 @@ No real player identities or live game integrations. Fairness is multidimensiona
 
 ## Development
 
-MIT licensed. GitHub Actions builds and tests Python **3.10, 3.11 and 3.12 on Windows and Ubuntu**. The [validation matrix](evidence/validation.md) links to the corresponding hosted results once complete. See [the case study](docs/case-study.md) for architecture, complexity, controls and the exact evidence boundaries.
+MIT licensed. The implementation passed **all six GitHub Actions combinations** (Python **3.10, 3.11, 3.12** on **Windows and Ubuntu**) in [run #43693709556](https://github.com/Preciouscrazy/MatchFair/actions/runs/43693709556). The [validation record](evidence/validation.md) identifies the exact tested source commit and follow-up CI status. See [the case study](docs/case-study.md) for architecture, complexity, safety and evidence boundaries.
