@@ -21,3 +21,7 @@ Exhaustive partition search is suitable only for small teams, capped at five pla
 - `evidence/sample-match-report.json`
 - `evidence/queue-tradeoff-report.json`
 - `examples/queue_tradeoff.csv`
+
+## Validation and detailed walkthrough
+
+The [engineering case study](case-study.md) gives a short interview-ready architecture and tradeoff explanation. The [validation matrix](../evidence/validation.md) records exact Windows/Ubuntu CI runs. The CLI uses strict CSV input and staged output; the simulator checks inputs supplied through the Python API too. The deterministic sample report and queue-order counterexample are compared with their checked-in JSON, not evaluated against real player outcomes.

@@ -1,12 +1,18 @@
 # MatchFair
 
-**Offline matchmaking fairness laboratory** for studying skill balance and queue-wait tradeoffs in simulated multiplayer matches.
+**Python 3.10+ | Deterministic matchmaking simulation | Skill-balance and queue-order tradeoffs**
 
-MatchFair is an independent educational project, not a Riot Games service or integration. It reads synthetic player data, creates two balanced teams using a deterministic heuristic, and reports skill gaps and waiting-time summaries. It does not use Riot APIs or player accounts.
+MatchFair is an independent offline simulator for exploring how **skill-balance objectives interact with queue selection**. It groups synthetic players by region, selects match-sized batches in longest-wait-first order, and exhaustively searches small-team partitions to minimize each match's skill-total difference.
+
+**Engineering focus:** deterministic tie-breaking, precise comparisons, strict data validation, safe JSON report generation, and reproducible counterexamples—not real player skill estimates or deployed matchmaking behavior.
+
+[Engineering case study](docs/case-study.md) · [Validation record](evidence/validation.md) · [Synthetic example](examples/players.csv) · [Tradeoff fixture](examples/queue_tradeoff.csv)
+
+MatchFair uses no Riot Games API, live player accounts or production matchmaking systems. All sample players, ratings and wait times are fictional.
 
 ## 60-second walkthrough
 
-The [sample report](evidence/sample-match-report.json) shows two 2v2 matches from [eight fictional players](examples/players.csv). Each region’s team totals tie. Five unit tests passed in a local run, covering team balance, repeatability, invalid sizes, incomplete pools, and the sample CSV.
+The [sample report](evidence/sample-match-report.json) shows two 2v2 matches from [eight fictional players](examples/players.csv). Each region’s team totals tie. The sample fixture and tradeoff fixture are both checked against the committed JSON reports in automated tests. The expanded regression suite also covers edge cases, input/output safety, and six Windows/Ubuntu Python combinations; see the [validation record](evidence/validation.md) for verified status.
 
 ### Same pool, different team assignments
 
@@ -33,15 +39,17 @@ python -m matchfair --input examples/players.csv --output match-report.json
 python -m unittest discover -s tests -v
 ```
 
-Input columns: `player_id,skill_rating,wait_seconds,region`. By default, teams have 2 players each (`--team-size 2`). Each regional pool must be a multiple of `2 * team_size`. A match is formed only among players in the same region.
+Input columns, in that **exact order**: `player_id,skill_rating,wait_seconds,region`. Player IDs must be unique globally, including across regions. Skill ratings and waits must be finite, nonnegative numbers; region and ID cannot be blank. Extra or missing columns are rejected with a source-line error. By default, teams have 2 players each (`--team-size 2`). Each regional pool must be a multiple of `2 * team_size`. A match is formed only among players in the same region.
+
+The CLI rejects an output path that refers to its input CSV, including hard-link aliases. It serializes JSON completely before staging a temporary file next to the destination and replacing the report; malformed input cannot truncate an existing report. The operation does not coordinate simultaneous writers or guarantee durability after power loss.
 
 ## Algorithm
 
 1. Validate IDs and nonnegative finite metrics.
 2. Group by region; order players by wait time (descending), then ID.
 3. Take consecutive groups of `2 * team_size`.
-4. Enumerate team assignments and minimize absolute team skill-total difference.
-5. Break ties deterministically using player IDs.
+4. Enumerate unique team assignments and compare the **actual absolute skill-total gap** (no rounding before candidate ranking).
+5. Break equal-gap ties deterministically using player IDs.
 
 This exhaustive partitioning is suitable for small teams only (team size <= 5). It is not a production matchmaking algorithm; it does not optimize role fit, latency, parties, uncertainty, or outcomes.
 
@@ -55,4 +63,4 @@ No real player identities or live game integrations. Fairness is multidimensiona
 
 ## Development
 
-MIT licensed. CI runs unit tests on Python 3.10–3.12.
+MIT licensed. GitHub Actions builds and tests Python **3.10, 3.11 and 3.12 on Windows and Ubuntu**. The [validation matrix](evidence/validation.md) links to the corresponding hosted results once complete. See [the case study](docs/case-study.md) for architecture, complexity, controls and the exact evidence boundaries.
